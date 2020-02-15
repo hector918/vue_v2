@@ -1,0 +1,4 @@
+npm install -g @vue/cli axios vue-axios-cors vue-router
+vue create vtclient
+cd vtclient
+vue add vuetify
