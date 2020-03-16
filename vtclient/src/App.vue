@@ -16,7 +16,17 @@ Vue.component('trans', {
     content : '',
   }),
   created (){
-    this.content = this.$translation[this.text];
+
+    //创建的时候，如果没有翻译，就直接设置原文
+    if(this.$translation==undefined)
+    {
+      this.content = this.text;
+    }
+    else
+    {
+      this.content = this.$translation[this.text];
+    }
+    
   },
   watch: {//监听全局变量
     $translation () {

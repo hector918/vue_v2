@@ -8,6 +8,8 @@ import notFound from './views/404.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import user_manager_page from './views/users_manager_page.vue'
 
+import control_sheet_all_page from './views/control_sheet_all_page.vue'
+
 Vue.use(R)
 
 const vueRouter = new R({
@@ -85,7 +87,20 @@ const vueRouter = new R({
         ]
         */
       },
-      
+      {
+        path:"/control_sheet_all", 
+        component:control_sheet_all_page,
+        meta : {
+          power_tag : "control_sheet_all",
+          requireAuth : true,
+        }
+        /*
+        children:[
+          {path:"", redirect:"index"},
+          {path:"index", name:"index", component:login_page},
+        ]
+        */
+      },
       { 
         path:"*", 
         component:notFound,

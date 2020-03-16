@@ -1,155 +1,30 @@
 
 <template>
   <v-container class="grey lighten-5">
-    <v-row >
-      <v-col
-        
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-        class="py-1"
-      >
-        <v-btn 
-          block 
-          @click="on_click('1')"
-        >1</v-btn>
+    <v-row 
+        class="justify-center"
+        v-for="(row, key) in all_rows"
+        v-bind:key="key"
+    >
+        <v-col
+            cols="12"
+            :sm="item.size"
+            class="ma-0 pa-1"
+            v-for="item in row" 
+            v-bind:key="item.text"
+        >
+            <v-btn 
+              block 
+              x-large
+              @click="on_click(item.value)"
+            >
+              {{ item.text }}
+              <v-icon v-if="item.icon!=undefined" color="grey">{{item.icon}}</v-icon>
+            </v-btn>
       </v-col>
-      <v-col
-       
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-        class="py-1"
-      >
-        <v-btn 
-          block 
-          @click="on_click('2')"
-        >2</v-btn>
-      </v-col>
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-      >
-        <v-btn 
-          block 
-          @click="on_click('3')"
-        >3</v-btn>
-      </v-col>
-
-    </v-row>
-        <v-row >
-      <v-col
-        
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-        class="py-0"
-      >
-        <v-btn 
-          block 
-          @click="on_click('4')"
-        >4</v-btn>
-      </v-col>
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-      >
-        <v-btn 
-          block 
-          @click="on_click('5')"
-        >5</v-btn>
-      </v-col>
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-      >
-        <v-btn 
-          block 
-          @click="on_click('6')"
-        >6</v-btn>
-      </v-col>
-
-    </v-row>
-    <v-row >
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-      >
-        <v-btn 
-          block 
-          @click="on_click('7')"
-        >7</v-btn>
-      </v-col>
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-      >
-        <v-btn 
-          block 
-          @click="on_click('8')"
-        >8</v-btn>
-      </v-col>
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-      >
-        <v-btn 
-          block 
-          @click="on_click('9')"
-        >9</v-btn>
-      </v-col>
-    
-    </v-row>
-    <v-row >
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-      >
-        <v-btn 
-          block 
-          @click="on_click('.')"
-        >.</v-btn>
-      </v-col>
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-      >
-        <v-btn 
-          block 
-          @click="on_click('0')"
-        >0</v-btn>
-      </v-col>
-      <v-col
-        class="py-1"
-        cols="12"
-        sm="4"
-        v-bind:class="this.component_name"
-        
-      >
-        <v-btn 
-          block 
-          @click="on_click('clear')"
-        >Clear</v-btn>
-      </v-col>
-
     </v-row>
   </v-container>
+
 </template>
 
 <script>
@@ -159,8 +34,37 @@ export default {
   name: "keypad_number",
   data: () => ({
     errors: [],
-    
+    all_rows : {
+        row_1 :[
+          {text:"1",size:2,value:"1"},
+          {text:"2",size:2,value:"2"},
+          {text:"3",size:2,value:"3"},
+            
+        ],
+        row_2 :[
+          {text:"4",size:2,value:"4"},
+          {text:"5",size:2,value:"5"},
+          {text:"6",size:2,value:"6"},
+          
+        ],
+        row_3 :[
+          {text:"7",size:2,value:"7"},
+          {text:"8",size:2,value:"8"},
+          {text:"9",size:2,value:"9"},
+        ],
+        row_4 :[
+          {text:".",size:2,value:"."},
+          {text:"0",size:2,value:"0"},
+          {icon:"mdi-keyboard-backspace",size:2,value:"BackSpace"},
+        ],
+        row_5 :[
+          
+          {text:"Enter",size:3,value:"Enter"},
+          {text:"Clear",size:3,value:"Clear"},
+        ],
+    },
     component_name : "keypad_number",
+    btn_class : "ma-0 pa-1",
   }),
   props: {
     //msg: String
@@ -177,65 +81,17 @@ export default {
     
   },
   methods: {
-    get_sub_var(obj,path){
-      let arr = path.split(".");
-      
-      for(let x in arr)
-      {
-        obj = obj[arr[x]]
-      }
-      return obj
-    },
-    set_sub_var(obj,path,val){
-      //如果直接返回， 是返回值，这里last_one返回的是指针
-      let arr = path.split(".");
-      let last_one=arr.pop();
-      for(let x in arr)
-      {
-        obj = obj[arr[x]]
-      }
-      obj[last_one]=val;
-    },
+    
     on_click(val){
-
-      if(this.$active_element==undefined)
-      {
-        return;
-      }
-      if(!this.$active_element.hasOwnProperty("event"))
-      {
-        return;
-      }
-
       switch(val)
       {
-        case "clear":
-          
-          this.set_sub_var(this.$active_element['this'],this.$active_element["obj"],"");
-          
-        break;
-        default:
-          
-          {//如果有选定目标
-            let input_obj=this.$active_element["event"].target;
-            if(input_obj!=undefined)
-            {
-              //如果有光标
-              let origin = this.get_sub_var(this.$active_element['this'],this.$active_element["obj"]);
-
-              const start =input_obj.selectionStart;
-              let length = origin.length;
-              
-              this.set_sub_var(this.$active_element['this'],this.$active_element["obj"],origin.substr(0,start)+val+origin.substring(start,length));
-              
-              setTimeout(function() {
-                input_obj.setSelectionRange(start+1,start+1);
-              }, 0);
-              
-            }
-            
-          }
-        break;
+          case "Clear":case "BackSpace":case "Space":case "Enter":
+              //功能键
+              this.$emit("FeedbackFromKeyboard",val.toLowerCase());
+          break;
+          default:
+              this.$emit("FeedbackFromKeyboard",val);
+          break;
       }
     },
 

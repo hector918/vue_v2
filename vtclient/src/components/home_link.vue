@@ -115,6 +115,42 @@
                 </v-col>
                 <!------------------------------------------->
                 <v-col
+                    key="4"
+                    class="d-flex child-flex"
+                    cols="4"
+                >
+                <v-card 
+                    tile 
+                    ripple 
+                    class="mx-auto"
+                    @click="JumpControlSheetAll"
+                >
+                    <v-img
+                        :src="`https://picsum.photos/500/300?image=${ 10 + 10}`"
+                        :lazy-src="`https://picsum.photos/10/6?image=${ 10 + 10}`"
+                        aspect-ratio="1.5"
+                        class="lighten-2 align-end"
+                    >
+                        <template v-slot:placeholder>
+                            <v-row
+                                class="fill-height ma-0"
+                                align="center"
+                                justify="center"
+                            >
+                                <v-progress-circular 
+                                    indeterminate 
+                                    color="grey lighten-5"
+                                ></v-progress-circular>
+                            </v-row>
+                        </template>
+                    
+                    </v-img>
+                    
+                    <v-card-subtitle><trans text="Control Sheet Master"></trans></v-card-subtitle>
+                </v-card>
+                </v-col>
+                <!------------------------------------------->
+                <v-col
                     v-for="n in tmp"
                     :key="n"
                     class="d-flex child-flex"
@@ -161,9 +197,10 @@
 
 import { actions } from '../data_operater.js';
 
+
 export default {
     data: () => ({
-        tmp : [4,5,6,7,8,9],
+        tmp : [5,6,7,8,9],
     }),
     components:{
 
@@ -174,6 +211,9 @@ export default {
         },
         JumpUserManager(){
             this.$router.push('usermanagerpage')
+        },
+        JumpControlSheetAll(){
+            this.$router.push('control_sheet_all')
         },
         LogingOut : function(){
             actions.login.logingout().then((response)=>{

@@ -32,6 +32,13 @@ export const actions = {
             promise.then(processFetchData).catch(handleError);
             return promise;
         },
+        update_user_field : (query)=>{
+            var promise=AX.post(API_URL+'users/updateuserfield',query);
+            promise.then(processFetchData).catch(handleError);
+
+            return promise;
+            
+        },
     },
     login : {
         logingin : (query)=>{
@@ -68,6 +75,18 @@ export const actions = {
             return promise;
         }
     },
+    form : {
+        upload_unfinished_form : (from,data)=>{
+            let promise = AX.post(API_URL+'form/upload_unfinished_form',{"form_name":from,"data":data});
+            promise.then().catch(handleError);
+            return promise;
+        },
+        get_unfinished_form : (from)=>{
+            let promise = AX.post(API_URL+'form/get_unfinished_form',{"form_name":from});
+            promise.then().catch(handleError);
+            return promise;
+        },
+    }
     
 }
 //处理数据
@@ -81,7 +100,7 @@ function processFetchData (response)
                 pageVar.this.$user=response.data[x];
             break;
             case "users":
-                pageVar.this.$users=response.data[x];
+                //pageVar.this.$users=response.data[x];
             break;
             case "errors":
                 
@@ -95,11 +114,12 @@ function processFetchData (response)
                     break;
                     case undefined:
                         //如果没有设定，就不作处理
-                        window.console.log("session field not set")
                         
                     break;
                     default :
                         //更新token
+                        
+                        window.console.log("token refresh");
                         localStorage.token = response.data['session']['session_id'];
                         AX.defaults.headers.token=response.data['session']['session_id'];
                     break;
@@ -119,7 +139,6 @@ function processFetchData (response)
             break;
             case "translation":
                 pageVar.this.$translation=response.data[x];
-                
             break;
             default:
                 

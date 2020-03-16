@@ -1,206 +1,117 @@
-
 <template>
   <v-container class="grey lighten-5">
-    <v-row class="justify-center">
+    <v-row 
+        class="justify-center"
+        v-for="(row, key) in all_rows"
+        v-bind:key="key"
+    >
         <v-col
             cols="12"
             :sm="item.size"
             class="ma-0 pa-1"
-            v-for="item in row_1" 
+            v-for="item in row" 
             v-bind:key="item.text"
         >
             <v-btn 
             block 
             x-large
-            @click="on_click(item.text)"
-            >{{ item.text }}</v-btn>
-      </v-col>
+            @click="on_click(item.value)"
+            >
+              {{ item.text }}
+              <v-icon v-if="item.icon!=undefined" color="grey">{{item.icon}}</v-icon>
+            </v-btn>
+        </v-col>
     </v-row>
-    <v-row class="justify-center">
-        <v-col
-            cols="12"
-            :sm="item.size"
-            class="ma-0 pa-1"
-            v-for="item in row_2" 
-            v-bind:key="item.text"
-        >
-            <v-btn 
-            block 
-            x-large
-            @click="on_click(item.text)"
-            >{{ item.text }}</v-btn>
-      </v-col>
-    </v-row>
-    <v-row class="justify-center">
-        <v-col
-            cols="12"
-            :sm="item.size"
-            class="ma-0 pa-1"
-            v-for="item in row_3" 
-            v-bind:key="item.text"
-        >
-            <v-btn 
-            block 
-            x-large
-            @click="on_click(item.text)"
-            >{{ item.text }}</v-btn>
-      </v-col>
-    </v-row>
-    <v-row class="justify-center">
-        <v-col
-            cols="12"
-            :sm="item.size"
-            class="ma-0 pa-1"
-            v-for="item in row_4" 
-            v-bind:key="item.text"
-        >
-            <v-btn 
-            block 
-            x-large
-            @click="on_click(item.text)"
-            >{{ item.text }}</v-btn>
-      </v-col>
-    </v-row>
-
   </v-container>
 </template>
 
 <script>
-import { pageVar } from '../data_operater.js';
 //import Router from 'vue-router'
 export default {
-  name: "keypad_number",
-  data: () => ({
-    errors: [],
-    row_1 :[
-        {text:"1",size:1},
-        {text:"2",size:1},
-        {text:"3",size:1},
-        {text:"4",size:1},
-        {text:"5",size:1},
-        {text:"6",size:1},
-        {text:"7",size:1},
-        {text:"8",size:1},
-        {text:"9",size:1},
-        {text:"BackSpace",size:2},
-    ],
-    row_2 :[
-        {text:"q",size:1},
-        {text:"w",size:1},
-        {text:"e",size:1},
-        {text:"r",size:1},
-        {text:"t",size:1},
-        {text:"y",size:1},
-        {text:"u",size:1},
-        {text:"i",size:1},
-        {text:"o",size:1},
-        {text:"p",size:1},
-    ],
-    row_3 :[
-        {text:"a",size:1},
-        {text:"s",size:1},
-        {text:"d",size:1},
-        {text:"f",size:1},
-        {text:"g",size:1},
-        {text:"h",size:1},
-        {text:"j",size:1},
-        {text:"k",size:1},
-        {text:"l",size:1},
-        {text:"Enter",size:2},
-    ],
-    row_4 :[
-        {text:"z",size:1},
-        {text:"x",size:1},
-        {text:"c",size:1},
-        {text:"v",size:1},
-        {text:"b",size:1},
-        {text:"n",size:1},
-        {text:"m",size:1},
-        {text:".",size:1},
-        {text:"-",size:1},
-        {text:"Clear",size:1},
-    ],
-    component_name : "keypad_number",
-    btn_class : "ma-0 pa-1",
-  }),
-  props: {
-    //msg: String
-  },
+    name: "keypad_full",
+    data: () => ({
+        errors: [],
+        all_rows : {
+            row_1 :[
+                {text:"1",size:1,value:"1"},
+                {text:"2",size:1,value:"2"},
+                {text:"3",size:1,value:"3"},
+                {text:"4",size:1,value:"4"},
+                {text:"5",size:1,value:"5"},
+                {text:"6",size:1,value:"6"},
+                {text:"7",size:1,value:"7"},
+                {text:"8",size:1,value:"8"},
+                {text:"9",size:1,value:"9"},
+                {icon:"mdi-keyboard-backspace",size:2,value:"BackSpace"},
+            ],
+            row_2 :[
+                {text:"q",size:1,value:"q"},
+                {text:"w",size:1,value:"w"},
+                {text:"e",size:1,value:"e"},
+                {text:"r",size:1,value:"r"},
+                {text:"t",size:1,value:"t"},
+                {text:"y",size:1,value:"y"},
+                {text:"u",size:1,value:"u"},
+                {text:"i",size:1,value:"i"},
+                {text:"o",size:1,value:"o"},
+                {text:"p",size:1,value:"p"},
+            ],
+            row_3 :[
+                {text:"a",size:1,value:"a"},
+                {text:"s",size:1,value:"s"},
+                {text:"d",size:1,value:"d"},
+                {text:"f",size:1,value:"f"},
+                {text:"g",size:1,value:"g"},
+                {text:"h",size:1,value:"h"},
+                {text:"j",size:1,value:"j"},
+                {text:"k",size:1,value:"k"},
+                {text:"l",size:1,value:"l"},
+                {text:"Enter",size:2,value:"Enter"},
+            ],
+            row_4 :[
+                {text:"z",size:1,value:"z"},
+                {text:"x",size:1,value:"x"},
+                {text:"c",size:1,value:"c"},
+                {text:"v",size:1,value:"v"},
+                {text:"b",size:1,value:"b"},
+                {text:"n",size:1,value:"n"},
+                {text:"m",size:1,value:"m"},
+                {text:".",size:1,value:"."},
+                {text:"-",size:1,value:"-"},
+                {text:"Clear",size:1,value:"Clear"},
+            ],
+            row_5 :[
+                {text:"Space",size:5,value:"Space"},
+            ],
+        },
+        component_name : "keypad_full",
+        btn_class : "ma-0 pa-1",
+    }),
+    props: {
 
-  computed: {
-    count() {
-        return pageVar.count;
     },
-    
-  },
-  created (){
-    //actions.users.fetchUsersFromApi()
-    
-  },
-  methods: {
-    get_sub_var(obj,path){
-      let arr = path.split(".");
-      
-      for(let x in arr)
-      {
-        obj = obj[arr[x]]
-      }
-      return obj
-    },
-    set_sub_var(obj,path,val){
-      //如果直接返回， 是返回值，这里last_one返回的是指针
-      let arr = path.split(".");
-      let last_one=arr.pop();
-      for(let x in arr)
-      {
-        obj = obj[arr[x]]
-      }
-      obj[last_one]=val;
-    },
-    on_click(val){
 
-      if(this.$active_element==undefined)
-      {
-        return;
-      }
-      if(!this.$active_element.hasOwnProperty("event"))
-      {
-        return;
-      }
+    computed: {
 
-      switch(val)
-      {
-        case "clear":
-          
-          this.set_sub_var(this.$active_element['this'],this.$active_element["obj"],"");
-          
-        break;
-        default:
-          
-          {//如果有选定目标
-            let input_obj=this.$active_element["event"].target;
-            if(input_obj!=undefined)
+    },
+    created (){
+        //actions.users.fetchUsersFromApi()
+
+    },
+    methods: {
+        on_click(val){
+            switch(val)
             {
-              //如果有光标
-              let origin = this.get_sub_var(this.$active_element['this'],this.$active_element["obj"]);
-
-              const start =input_obj.selectionStart;
-              let length = origin.length;
-              
-              this.set_sub_var(this.$active_element['this'],this.$active_element["obj"],origin.substr(0,start)+val+origin.substring(start,length));
-              
-              setTimeout(function() {
-                input_obj.setSelectionRange(start+1,start+1);
-              }, 0);
-              
+                case "Clear":case "BackSpace":case "Space":case "Enter":
+                    //功能键
+                   this.$emit("FeedbackFromKeyboard",val.toLowerCase());
+                break;
+                default:
+                    this.$emit("FeedbackFromKeyboard",val);
+                break;
             }
-            
-          }
-        break;
-      }
+        },
     },
-
-  },
 }
 </script>
 

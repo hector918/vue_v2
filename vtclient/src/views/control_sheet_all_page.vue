@@ -2,32 +2,24 @@
   <div>
 
     <topNavBar></topNavBar>
-    
-    <login></login>
-    
-  
+    <SizeMaster 
+    ></SizeMaster>
     
   </div>
 </template>
 
 <script>
 
-
 import topNavBar from "../components/top_nav_bar.vue";
-import login from "../components/login";
+
+import SizeMaster from "../components/size_master_edit.vue";
 export default {
  
   components:{
-    
     topNavBar,
-    login,
+    SizeMaster,
   },
-  created(){
-    
-  },
-  methods :{
-    
-  }
+  
 }
 </script>
 <style lang="less" scoped>

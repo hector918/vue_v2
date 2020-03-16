@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { actions } from './data_operater.js';
 ////////////////////////////////////////////////////////////////
-const translation = Vue.observable({ data: {} })
+const translation = Vue.observable({ data: undefined })
 Object.defineProperty(Vue.prototype, '$translation', {
     get () {
         return translation.data
@@ -12,12 +12,23 @@ Object.defineProperty(Vue.prototype, '$translation', {
 })
 
 Vue.prototype.$GetTranslation = function (val){
+    if(translation.data==undefined)
+    {
+        return val;
+    }
+    if(val.trim()=="")
+    {
+        return;
+    }
+    
+    
+    
     if(translation.data[val]==undefined)
     {
         actions.translation.update_unset(this.$current_language,val).then(result=>{
             if(result.data=="success")
             {
-                window.console.log(result);
+                //window.console.log(result);
             }
             
         })

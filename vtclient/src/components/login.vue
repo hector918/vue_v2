@@ -1,4 +1,3 @@
-
 <template>
   <v-container class="grey lighten-5">
     <v-flex xs12>
@@ -6,65 +5,53 @@
           :src="require('../assets/logo.svg')"
           class="my-3"
           contain
-          height="200"
+          height="180"
         ></v-img>
-      </v-flex>
-      <transition name="slide">
-      <v-row
-        no-gutters
-        style="height: 150px;"
-        v-if="errors.length"
-      >
-        <v-col>
-          <v-card
-            class="pa-2"
-            outlined
-            tile
-          >
-          <v-alert outlined color="red" >
-            <div class="title"><trans text="Please correct the following error(s):"></trans></div>
-            <trans v-for="(error,idx) in errors" v-bind:key="idx" v-bind:text="error"></trans>
-          </v-alert>
-          </v-card>
-        </v-col>
-      </v-row>
-      </transition>
-      <v-row
-        no-gutters
-        style="height: 150px;"
-      >
-        <v-col >
-          
-            <v-text-field
-              v-model="user.barcode"
-              :hint="this.$GetTranslation('For example, flowers or used cars')"
-              :counter="10"
-              clearable="clearable"
-              :label="this.$GetTranslation('Barcode')"
-              required
-              @blur="this.$input_ele_on_blur"
-              @focusin="onfocus('user.barcode',$event)"
-              id='barcodeinput'
-            ></v-text-field>
-            <v-btn class="mr-4" v-on:click="LogingIn"><trans text="Login"></trans></v-btn>
-            <v-btn @click="clear" ><trans text="Clear"></trans></v-btn>
-          
-    
-        </v-col>
+    </v-flex>
+
+    <v-row justify="center" >
+      <v-col cols="6">
+        
+        <v-text-field
+          v-model="user.barcode"
+          :counter="10"
+          :rules="barcodeinputrule"
+          :label="this.$GetTranslation('Barcode')"
+          persistent-hint
+          required
+          @blur="onblur"
+          id='barcodeinput'
+        ></v-text-field>
+        
+      </v-col>
     </v-row>
+    <v-row class="justify-center" >
+      <v-col cols="6">
+        <v-btn class="mr-4" v-on:click="LogingIn"><trans text="Login"></trans></v-btn>
+      </v-col>
+    </v-row>
+    <KeypadNumber @FeedbackFromKeyboard="catch_from_keyboard"></KeypadNumber>
   </v-container>  
 </template>
 
 <script>
 
 import { pageVar,  actions} from '../data_operater.js';
+
+import KeypadNumber from '../components/keypad_number.vue';
 //import Router from 'vue-router'
 export default {
   name: "login",
+  components:{
+
+    KeypadNumber,
+  },
   data: () => ({
     errors: [],
     
+    error_on:true,
     user: {
+
         barcode: "",
 
     }
@@ -77,7 +64,22 @@ export default {
     count() {
         return pageVar.count;
     },
-    
+    barcodeinputrule(){
+
+      if(this.$GetTranslation(this.errors.toString())==undefined)
+      {
+        return [""]
+      }
+      else
+      {
+        let arr = [];
+        for(var x in this.errors)
+        {
+          arr.push(this.$GetTranslation(this.errors[x].toString()));
+        }
+        return arr;
+      }
+    },
   },
   mounted (){
 
@@ -87,42 +89,64 @@ export default {
     //actions.users.fetchUsersFromApi()
   },
   methods: {
-    onfocus (obj,e){
-      let par = {
-        "obj" : obj,
-        "event" : e,
-        "this" : this
-      }
+    onblur(e){
       
-      this.$active_element=par;
-      //this.$active_element=`${this[obj]}`;
+      e.target.focus();
+    },
+    catch_from_keyboard(from_keyboard_val){
+      
+      const textarea = document.getElementById("barcodeinput");
+      
+      const start =textarea.selectionStart;
+
+      switch(from_keyboard_val)
+      {
+        case "clear":
+          this.user.barcode = "";
+        break;
+        case "backspace":
+          //内容变更
+          this.user.barcode =textarea.value.substr(0,start-1)+textarea.value.substring(start,textarea.value.length);
+          //光标选择
+          setTimeout(function(){
+            textarea.setSelectionRange(start-1,start-1);},0);
+        break;
+        case "enter":
+
+        break;
+        default:
+          //space
+          if(from_keyboard_val=="space"){from_keyboard_val=" ";}
+       
+          //内容变更
+          this.user.barcode =textarea.value.substr(0,start)+from_keyboard_val+textarea.value.substring(start,textarea.value.length);
+          //光标选择
+          setTimeout(function(){
+            textarea.setSelectionRange(start+1,start+1);},0);
+
+        break;
+      }
     },
     LogingIn (){
       
       this.errors=[];
       
       actions.login.logingin({barcode:this.user.barcode}).then((response)=>{
-        
           
         this.errors=[];
         if(response.data.result=="success")
         {
-            this.$router.push("/home");
+          this.$router.push("/home");
         }
         else
         {
-            this.errors.push(response.data.result);
+          this.errors.push(response.data.result);
         }
         
       }).catch((error)=>{
         this.errors.push(error);
       })
-      
         
-    },
-    clear () {
-      
-      this.barcode = ''
     },
   },
 }
